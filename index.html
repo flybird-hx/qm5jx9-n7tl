@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCI论文执行计划 — 建筑排水存水弯流体动力学研究</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+  background: #f6f8fa;
+  color: #1a1f2e;
+  font-size: 14px;
+  line-height: 1.7;
+  padding-top: 122px;
+  padding-bottom: 68px;
+}
+#site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: #ffffff;
+  border-bottom: 1px solid #d0d7de;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  z-index: 1000;
+  padding: 0 20px;
+}
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 0 5px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.header-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1f2e;
+}
+.header-title .ht-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: #0969da;
+  background: rgba(9,105,218,0.1);
+  border: 1px solid rgba(9,105,218,0.3);
+  border-radius: 20px;
+  padding: 1px 8px;
+  margin-left: 7px;
+  vertical-align: middle;
+}
+.header-stats {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #57606a;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.hs-done { color: #1a7f37; font-weight: 600; }
+.hs-num  { font-weight: 600; color: #1a1f2e; }
+.progress-wrap {
+  padding: 3px 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.progress-bg {
+  flex: 1;
+  height: 8px;
+  background: #eaeef2;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #0969da, #388bfd);
+  transition: width 0.4s ease;
+}
+.progress-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #57606a;
+  white-space: nowrap;
+  min-width: 34px;
+  text-align: right;
+}
+.nav-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 0 7px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+.nav-tab {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 20px;
+  border: 1px solid #d0d7de;
+  background: #f6f8fa;
+  color: #57606a;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.15s;
+}
+.nav-tab:hover { background: #eaeef2; color: #1a1f2e; }
+.nav-tab.active { background: #0969da; border-color: #0969da; color: #fff; }
+#site-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #ffffff;
+  border-top: 1px solid #d0d7de;
+  padding: 7px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.footer-info {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #57606a;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.footer-info b { color: #1a1f2e; }
+.btn-reset {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 13px;
+  border-radius: 6px;
+  border: 1px solid #cf222e;
+  background: rgba(207,34,46,0.06);
+  color: #cf222e;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-reset:hover { background: #cf222e; color: #fff; }
+#save-toast {
+  position: fixed;
+  bottom: 58px;
+  right: 20px;
+  background: #1a7f37;
+  color: #fff;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: all 0.2s ease;
+  pointer-events: none;
+  z-index: 9999;
+}
+#save-toast.show { opacity: 1; transform: translateY(0); }
+.main { max-width: 880px; margin: 0 auto; padding: 20px 14px; }
+.section { margin-bottom: 28px; }
+.section-anchor { display: block; height: 0; }
+.phase-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.phase-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  border: 1px solid;
+}
+.phase-line { flex: 1; height: 1px; background: #d0d7de; }
+.phase-desc { font-size: 11px; color: #8c959f; white-space: nowrap; }
+.ph-green  { background: rgba(26,127,55,0.1);  color: #1a7f37; border-color: rgba(26,127,55,0.3); }
+.ph-blue   { background: rgba(9,105,218,0.1);  color: #0969da; border-color: rgba(9,105,218,0.3); }
+.ph-purple { background: rgba(102,57,186,0.1); color: #6639ba; border-color: rgba(102,57,186,0.3); }
+.ph-red    { background: rgba(207,34,46,0.1);  color: #cf222e; border-color: rgba(207,34,46,0.3); }
+.ph-orange { background: rgba(188,76,0,0.1);   color: #bc4c00; border-color: rgba(188,76,0,0.3); }
+.task-card {
+  background: #ffffff;
+  border: 1px solid #d0d7de;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  margin-bottom: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.task-card:hover { box-shadow: 0 3px 8px rgba(0,0,0,0.12); }
+.task-card.completed .task-name { text-decoration: line-through; color: #8c959f; }
+.task-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 15px;
+  cursor: pointer;
+  user-select: none;
+}
+.task-header:hover { background: #f6f8fa; }
+.task-check {
+  width: 18px; height: 18px;
+  border: 2px solid #d0d7de;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  background: #fff;
+}
+.task-check.checked { background: #1a7f37; border-color: #1a7f37; }
+.task-check.checked::after {
+  content: '';
+  width: 10px; height: 5px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg) translateY(-1px);
+  display: block;
+}
+.task-header-info { flex: 1; min-width: 0; }
+.task-title-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.task-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: #8c959f;
+  flex-shrink: 0;
+}
+.task-name { font-size: 14px; font-weight: 600; color: #1a1f2e; }
+.tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 20px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.tag-done   { background: rgba(26,127,55,0.1);  color: #1a7f37; border-color: rgba(26,127,55,0.3); }
+.tag-add    { background: rgba(207,34,46,0.1);  color: #cf222e; border-color: rgba(207,34,46,0.3); }
+.tag-warn   { background: rgba(188,76,0,0.1);   color: #bc4c00; border-color: rgba(188,76,0,0.3); }
+.tag-theory { background: rgba(102,57,186,0.1); color: #6639ba; border-color: rgba(102,57,186,0.3); }
+.tag-exp    { background: rgba(9,105,218,0.1);  color: #0969da; border-color: rgba(9,105,218,0.3); }
+.task-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: #8c959f;
+}
+.task-expand {
+  font-size: 16px;
+  color: #8c959f;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+.task-expand.open { transform: rotate(90deg); }
+.task-body {
+  display: none;
+  border-top: 1px solid #eaeef2;
+  padding: 14px 15px;
+}
+.task-body.open { display: block; }
+.subtask-list { list-style: none; }
+.subtask-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 9px 0;
+  border-bottom: 1px dashed #eaeef2;
+}
+.subtask-item:last-child { border-bottom: none; padding-bottom: 0; }
+.sub-check {
+  width: 16px; height: 16px;
+  border: 2px solid #d0d7de;
+  border-radius: 3px;
+  flex-shrink: 0;
+  margin-top: 3px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: #fff;
+}
+.sub-check:hover { border-color: #0969da; }
+.sub-check.checked { background: #0969da; border-color: #0969da; }
+.sub-check.checked::after {
+  content: '';
+  width: 8px; height: 4px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg) translateY(-1px);
+  display: block;
+}
+.subtask-content { flex: 1; min-width: 0; }
+.subtask-title { font-size: 13px; font-weight: 600; color: #1a1f2e; margin-bottom: 2px; }
+.subtask-title.sub-done { text-decoration: line-through; color: #8c959f; }
+.subtask-desc { font-size: 12px; color: #57606a; line-height: 1.65; }
+.note {
+  margin-top: 7px;
+  padding: 7px 11px;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.6;
+  border-left: 3px solid;
+}
+.note-tip    { background: rgba(9,105,218,0.06);  color: #0969da;  border-color: #0969da; }
+.note-warn   { background: rgba(188,76,0,0.06);   color: #bc4c00;  border-color: #bc4c00; }
+.note-code   { background: #f6f8fa; color: #1a1f2e; border-color: #d0d7de; font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
+.note-key    { background: rgba(102,57,186,0.06); color: #6639ba;  border-color: #6639ba; }
+.task-footer {
+  background: #f6f8fa;
+  border-top: 1px solid #eaeef2;
+  padding: 9px 15px;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: #57606a;
+}
+.tf-label { color: #8c959f; }
+.tf-value { font-weight: 600; color: #1a1f2e; }
+.overview-card {
+  background: #ffffff;
+  border: 1px solid #d0d7de;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  padding: 18px;
+  margin-bottom: 20px;
+}
+.overview-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1f2e;
+  margin-bottom: 14px;
+  padding-bottom: 9px;
+  border-bottom: 2px solid #0969da;
+}
+.flow-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 14px;
+}
+.flow-box {
+  border-radius: 8px;
+  border: 1.5px solid;
+  padding: 9px 10px;
+  text-align: center;
+  width: 126px;
+}
+.flow-ph   { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 600; opacity: 0.7; margin-bottom: 2px; }
+.flow-name { font-size: 11px; font-weight: 700; line-height: 1.3; }
+.flow-desc { font-size: 10px; margin-top: 2px; opacity: 0.7; }
+.flow-st   { font-family: 'IBM Plex Mono', monospace; font-size: 10px; margin-top: 5px; padding: 1px 7px; border-radius: 20px; display: inline-block; }
+.fn-green  { background: rgba(26,127,55,0.08);  border-color: rgba(26,127,55,0.4);  color: #1a7f37; }
+.fn-green  .flow-st { background: rgba(26,127,55,0.15); }
+.fn-blue   { background: rgba(9,105,218,0.08);  border-color: rgba(9,105,218,0.4);  color: #0969da; }
+.fn-blue   .flow-st { background: rgba(9,105,218,0.15); }
+.fn-purple { background: rgba(102,57,186,0.08); border-color: rgba(102,57,186,0.4); color: #6639ba; }
+.fn-purple .flow-st { background: rgba(102,57,186,0.15); }
+.fn-red    { background: rgba(207,34,46,0.08);  border-color: rgba(207,34,46,0.4);  color: #cf222e; border-style: dashed; }
+.fn-red    .flow-st { background: rgba(207,34,46,0.15); }
+.fn-orange { background: rgba(188,76,0,0.08);   border-color: rgba(188,76,0,0.4);   color: #bc4c00; }
+.fn-orange .flow-st { background: rgba(188,76,0,0.15); }
+.flow-arr  { font-size: 16px; color: #8c959f; padding: 0 2px; margin-top: -10px; }
+.logic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+.logic-item {
+  border-radius: 8px;
+  border: 1px solid;
+  padding: 11px 13px;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.li-green  { border-color: rgba(26,127,55,0.3);  background: rgba(26,127,55,0.05); }
+.li-blue   { border-color: rgba(9,105,218,0.3);  background: rgba(9,105,218,0.05); }
+.li-purple { border-color: rgba(102,57,186,0.3); background: rgba(102,57,186,0.05); }
+.li-red    { border-color: rgba(207,34,46,0.3);  background: rgba(207,34,46,0.05); }
+.logic-item-title { font-size: 12px; font-weight: 700; margin-bottom: 5px; }
+.li-green .logic-item-title  { color: #1a7f37; }
+.li-blue .logic-item-title   { color: #0969da; }
+.li-purple .logic-item-title { color: #6639ba; }
+.li-red .logic-item-title    { color: #cf222e; }
+.callout {
+  border-radius: 8px;
+  border: 1px solid;
+  padding: 11px 14px;
+  margin: 10px 0 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  display: flex;
+  gap: 9px;
+}
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.callout-red  { border-color: rgba(207,34,46,0.3); background: rgba(207,34,46,0.05); color: #1a1f2e; }
+.tbl-wrap { overflow-x: auto; margin-top: 10px; }
+table.plan-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.plan-table th {
+  background: #1a1f2e;
+  color: #fff;
+  padding: 8px 11px;
+  text-align: left;
+  font-weight: 600;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.plan-table th:first-child { border-radius: 6px 0 0 0; }
+.plan-table th:last-child  { border-radius: 0 6px 0 0; }
+.plan-table td { padding: 7px 11px; border-bottom: 1px solid #eaeef2; vertical-align: top; line-height: 1.6; }
+.plan-table tr:nth-child(even) td { background: #f6f8fa; }
+.plan-table tr:hover td { background: rgba(9,105,218,0.04); }
+.prio-h { color: #cf222e; font-weight: 700; font-family: 'IBM Plex Mono', monospace; font-size: 10px; }
+.prio-m { color: #bc4c00; font-weight: 600; font-family: 'IBM Plex Mono', monospace; font-size: 10px; }
+.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+.dot-g { background: #1a7f37; }
+.dot-o { background: #bc4c00; }
+.dot-r { background: #cf222e; }
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+.week-card {
+  background: #ffffff;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  padding: 13px;
+  font-size: 12px;
+  line-height: 1.75;
+}
+.week-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  margin-bottom: 7px;
+  padding-bottom: 5px;
+  border-bottom: 2px solid;
+}
+.wt-red    { color: #cf222e; border-color: #cf222e; }
+.wt-blue   { color: #0969da; border-color: #0969da; }
+.wt-purple { color: #6639ba; border-color: #6639ba; }
+.wt-green  { color: #1a7f37; border-color: #1a7f37; }
+.week-card ul { list-style: none; }
+.week-card li::before { content: "· "; color: #8c959f; }
+.legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 9px 14px;
+  background: #ffffff;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  font-size: 12px;
+  color: #57606a;
+}
+.legend-item { display: flex; align-items: center; gap: 5px; }
+@media (max-width: 600px) {
+  body { padding-top: 148px; }
+  .flow-box { width: 108px; }
+}
+</style>
+</head>
+<body>
+
+<header id="site-header">
+  <div class="header-top">
+    <div class="header-title">
+      建筑排水存水弯 · SCI研究执行计划
+      <span class="ht-badge">Building and Environment</span>
+    </div>
+    <div class="header-stats">
+      <span>任务 <span class="hs-num" id="hd-total">10</span></span>
+      <span class="hs-done">已完成 <span class="hs-num" id="hd-done">0</span></span>
+      <span>子项 <span class="hs-num" id="hd-sub-done">0</span> / <span class="hs-num" id="hd-sub-total">39</span></span>
+    </div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bg">
+      <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+    </div>
+    <div class="progress-label" id="prog-text">0%</div>
+  </div>
+  <nav class="nav-tabs">
+    <a class="nav-tab active" href="#sec-logic" onclick="setTab(this)">🗺 逻辑总览</a>
+    <a class="nav-tab" href="#sec-p1" onclick="setTab(this)">P1 · 模型验证</a>
+    <a class="nav-tab" href="#sec-p2" onclick="setTab(this)">P2 · 理论推导</a>
+    <a class="nav-tab" href="#sec-p3" onclick="setTab(this)">P3 · CFD深化</a>
+    <a class="nav-tab" href="#sec-p4" onclick="setTab(this)">P4 · 实验验证</a>
+    <a class="nav-tab" href="#sec-p5" onclick="setTab(this)">P5 · 论文撰写</a>
+    <a class="nav-tab" href="#sec-table" onclick="setTab(this)">📋 总览表</a>
+    <a class="nav-tab" href="#sec-week" onclick="setTab(this)">🚀 第一周</a>
+  </nav>
+</header>
+
+<div id="save-toast">✓ 已保存</div>
+
+<main class="main">
+
+  <div class="legend">
+    <strong>图例：</strong>
+    <div class="legend-item"><span class="dot dot-g"></span>已完成</div>
+    <div class="legend-item"><span class="dot dot-o"></span>需增强</div>
+    <div class="legend-item"><span class="dot dot-r"></span>必须新增</div>
+    <div class="legend-item"><span class="tag tag-warn">⚠ 必须</span>SCI硬性要求</div>
+    <div class="legend-item"><span class="tag tag-theory">∑ 理论</span>解析推导</div>
+    <div class="legend-item"><span class="tag tag-exp">🔬 实验</span>物理实验</div>
+    <div style="margin-left:auto;font-size:11px;color:#8c959f;">点击任务标题展开详情 · 勾选标记完成</div>
+  </div>
+
+  <!-- 逻辑总览 -->
+  <span class="section-anchor" id="sec-logic"></span>
+  <div class="section">
+    <div class="overview-card">
+      <div class="overview-title">🗺 研究逻辑总览 — 各阶段依赖与驱动关系</div>
+      <div class="flow-row">
+        <div class="flow-box fn-green">
+          <div class="flow-ph">PHASE 1 · 基础</div>
+          <div class="flow-name">数值模型<br>建立与验证</div>
+          <div class="flow-desc">网格 + 湍流模型</div>
+          <div class="flow-st">✓ 基本完成</div>
+        </div>
+        <div class="flow-arr">→</div>
+        <div class="flow-box fn-purple">
+          <div class="flow-ph">PHASE 2 · 理论</div>
+          <div class="flow-name">解析理论<br>模型推导</div>
+          <div class="flow-desc">固有频率公式</div>
+          <div class="flow-st">⚡ 需新增</div>
+        </div>
+        <div class="flow-arr">→</div>
+        <div class="flow-box fn-green">
+          <div class="flow-ph">PHASE 3a · 数值</div>
+          <div class="flow-name">固有动力学<br>辨识</div>
+          <div class="flow-desc">自由衰减 + 阻尼</div>
+          <div class="flow-st">✓ 需增强</div>
+        </div>
+        <div class="flow-arr">→</div>
+        <div class="flow-box fn-blue">
+          <div class="flow-ph">PHASE 3b · 数值</div>
+          <div class="flow-name">频率响应<br>特性</div>
+          <div class="flow-desc">FRF + 共振分析</div>
+          <div class="flow-st">⚡ 需增强</div>
+        </div>
+        <div class="flow-arr">→</div>
+        <div class="flow-box fn-orange">
+          <div class="flow-ph">PHASE 3c · 数值</div>
+          <div class="flow-name">极限承压<br>能力</div>
+          <div class="flow-desc">破坏阈值 + P-t</div>
+          <div class="flow-st">⚡ 需增强</div>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:11px;color:#8c959f;margin:6px 0 10px;">↕ 所有CFD结果均需与下方实验台数据交叉验证</div>
+      <div class="flow-row" style="margin-bottom:0;">
+        <div class="flow-box fn-red" style="width:156px;">
+          <div class="flow-ph">贯穿全局 · 验证</div>
+          <div class="flow-name">物理实验台验证</div>
+          <div class="flow-desc">自由衰减 + 强迫振荡<br>实测 vs CFD</div>
+          <div class="flow-st">🔴 必须新建</div>
+        </div>
+      </div>
+      <div class="logic-grid">
+        <div class="logic-item li-green">
+          <div class="logic-item-title">① 模型验证 → 固有动力学</div>
+          先确认CFD数值方法可靠，才能相信自由衰减给出的固有频率。若模型不可信，后续所有结论均无效。网格无关性验证是整个研究的地基。
+        </div>
+        <div class="logic-item li-purple">
+          <div class="logic-item-title">② 理论模型 ↔ 固有动力学</div>
+          解析公式的 f_theory 必须与CFD自由衰减的 f_CFD 对比，误差在5%内则相互支撑；差异本身也可能是非线性效应的新发现，是论文最核心的创新支撑。
+        </div>
+        <div class="logic-item li-blue">
+          <div class="logic-item-title">③ 固有频率 → 频响扫频中心</div>
+          自由衰减得到的 f_n 决定了强迫振荡应在哪个频段加密扫描。现有0.5~2.5Hz范围必须以 f_n 为中心展开，才有理论依据，否则审稿人会质疑选频依据。
+        </div>
+        <div class="logic-item li-red">
+          <div class="logic-item-title">④ 频响特性 → 极限承压</div>
+          共振频率处振幅最大，是最危险工况。极限承压测试应优先在共振频率下进行，建立"频率-幅值-破坏压力"三维关系，才能给出完整安全包络线。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 阶段一 -->
+  <span class="section-anchor" id="sec-p1"></span>
+  <div class="section">
+    <div class="phase-header">
+      <div class="phase-badge ph-green">✓ 阶段一</div>
+      <div class="phase-line"></div>
+      <div class="phase-desc">数值模型建立与可靠性验证</div>
+    </div>
+    <div class="task-card" id="task-1-1">
+      <div class="task-header" onclick="toggleTask('1-1')">
+        <div class="task-check" id="chk-1-1" onclick="toggleCheck(event,'1-1')"></div>
+        <div class="task-header-info">
+          <div class="task-title-row">
+            <span class="task-num">1.1</span>
+            <span class="task-name">网格无关性验证 — 增强版</span>
+            <span class="tag tag-done">✓ 已完成基础</span>
+            <span class="tag tag-warn">⚠ 需增强</span>
+          </div>
+          <div class="task-meta">
+            <span>📁 U型弯 + 钟罩式</span>
+            <span>⏱ 3~5天</span>
+            <span>🔗 前置：无</span>
+          </div>
+        </div>
+        <div class="task-expand" id="exp-1-1">›</div>
+      </div>
+      <div class="task-body" id="body-1-1">
+        <ul class="subtask-list">
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-1-1-A" onclick="toggleSub(event,'1-1-A')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-1-1-A">A · 已完成：三套网格对比 (3mm / 2mm / 1.2mm)</div>
+              <div class="subtask-desc">现有工作已覆盖三个网格尺度的对比，是合格的起点。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-1-1-B" onclick="toggleSub(event,'1-1-B')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-1-1-B">B · 【必须】引入Richardson外推法计算GCI指数</div>
+              <div class="subtask-desc">从三套网格的特征量（水封最大振幅、液面压力峰值）计算网格收敛指数GCI，证明细网格误差＜1%。这是SCI审稿人的基本要求。</div>
+              <div class="note note-code">GCI = Fs × |ε| / (r^p - 1)<br>Fs=安全系数(1.25)，r=网格细化比，p=收敛阶数，ε=相对误差</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-1-1-C" onclick="toggleSub(event,'1-1-C')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-1-1-C">C · 【必须】补充多指标收敛验证（不能只看水面高度）</div>
+              <div class="subtask-desc">同时报告以下三个物理量的收敛性：① 水封振幅(mm)，② 气液界面位置(相对误差)，③ 气侧压力波动幅值(Pa)。制作"三指标-三网格"收敛曲线图。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-1-1-D" onclick="toggleSub(event,'1-1-D')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-1-1-D">D · 【必须】湍流模型敏感性对比 (k-ε vs k-ω SST)</div>
+              <div class="subtask-desc">在最优网格下对比两种湍流模型对自由液面捕捉的差异，选择最优模型并给出理由。</div>
+              <div class="note note-warn">⚠ 审稿人必问：为何选该湍流模型？若无此对比极可能被要求大修。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-1-1-E" onclick="toggleSub(event,'1-1-E')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-1-1-E">E · 【建议】钟罩式：近壁区 y+ 值验证</div>
+              <div class="subtask-desc">钟罩式内外筒间隙处流速较高，需验证近壁节点y+值满足所选湍流模型要求，并给出y+分布云图。</div>
+            </div>
+          </li>
+        </ul>
+        <div class="task-footer">
+          <span><span class="tf-label">输出：</span><span class="tf-value">GCI表 + 三指标收敛图 + 湍流模型对比表</span></span>
+          <span><span class="tf-label">支撑：</span><span class="tf-value">确立后续所有仿真的网格方案与湍流模型</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 阶段二 -->
+  <span class="section-anchor" id="sec-p2"></span>
+  <div class="section">
+    <div class="phase-header">
+      <div class="phase-badge ph-purple">⚡ 阶段二</div>
+      <div class="phase-line"></div>
+      <div class="phase-desc">解析理论模型推导（核心创新点之一）</div>
+    </div>
+    <div class="callout callout-red">
+      <div class="callout-icon">🔴</div>
+      <div><strong>为何必须先做理论推导？</strong> SCI论文不是仿真报告。CFD只能告诉你"是什么"，理论模型才能解释"为什么"。若没有解析公式，审稿人会认为研究只是参数扫描，缺乏学术深度，极难发表于Q1期刊。理论公式与CFD的比对是论文最核心的创新支撑，且推导工作与CFD补充可并行，不浪费时间。</div>
+    </div>
+    <div class="task-card" id="task-2-1">
+      <div class="task-header" onclick="toggleTask('2-1')">
+        <div class="task-check" id="chk-2-1" onclick="toggleCheck(event,'2-1')"></div>
+        <div class="task-header-info">
+          <div class="task-title-row">
+            <span class="task-num">2.1</span>
+            <span class="task-name">U型弯固有频率解析模型推导</span>
+            <span class="tag tag-theory">∑ 理论推导</span>
+            <span class="tag tag-add">🔴 必须新增</span>
+          </div>
+          <div class="task-meta">
+            <span>📁 纸笔推导 + MATLAB/Python验证</span>
+            <span>⏱ 5~7天</span>
+            <span>🔗 前置：1.1</span>
+          </div>
+        </div>
+        <div class="task-expand" id="exp-2-1">›</div>
+      </div>
+      <div class="task-body" id="body-2-1">
+        <ul class="subtask-list">
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-2-1-A" onclick="toggleSub(event,'2-1-A')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-2-1-A">A · 建立U型弯液柱振荡运动方程</div>
+              <div class="subtask-desc">将U型弯水封视为等截面液柱，忽略表面张力，考虑重力和流体摩擦阻力，建立类谐振子的二阶常微分方程。</div>
+              <div class="note note-code">ρ·L_eff·ẍ + c·ẋ + 2ρg·x = 0<br>无阻尼固有频率：f_n = (1/2π)·√(2g/L_eff)</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-2-1-B" onclick="toggleSub(event,'2-1-B')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-2-1-B">B · 确定等效液柱长度 L_eff 的几何计算方法</div>
+              <div class="subtask-desc">推导L_eff与几何参数（管径D、水封深度H、弯管曲率半径R）的关系表达式，这是理论模型的核心参数。</div>
+              <div class="note note-tip">💡 参考：Swaffield &amp; Galowin (1992) 液柱振荡模型，以及 Wong et al. 排水管道压力传播模型。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-2-1-C" onclick="toggleSub(event,'2-1-C')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-2-1-C">C · 推导等效阻尼系数 c 的表达式</div>
+              <div class="subtask-desc">阻尼来源：① 管壁摩擦（Hagen-Poiseuille流动阻力），② 弯管局部阻力（引入局部阻力系数ξ）。合并为等效线性阻尼，计算阻尼比ζ_theory。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-2-1-D" onclick="toggleSub(event,'2-1-D')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-2-1-D">D · 与CFD自由衰减结果对比制表</div>
+              <div class="subtask-desc">将理论计算的 f_n 与任务3.1 CFD得到的 f_CFD 制成对比表，计算相对误差。误差在5%以内则两者相互验证。</div>
+              <div class="note note-key">🔑 这一对比表是论文中最有说服力的结果之一，必须出现在论文正文。</div>
+            </div>
+          </li>
+        </ul>
+        <div class="task-footer">
+          <span><span class="tf-label">输出：</span><span class="tf-value">U型弯解析公式 + 阻尼比理论预测值 + CFD对比表</span></span>
+          <span><span class="tf-label">创新：</span><span class="tf-value">提供可用于工程设计的显式计算公式</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="task-card" id="task-2-2">
+      <div class="task-header" onclick="toggleTask('2-2')">
+        <div class="task-check" id="chk-2-2" onclick="toggleCheck(event,'2-2')"></div>
+        <div class="task-header-info">
+          <div class="task-title-row">
+            <span class="task-num">2.2</span>
+            <span class="task-name">钟罩式存水弯固有频率修正模型推导</span>
+            <span class="tag tag-theory">∑ 理论推导</span>
+            <span class="tag tag-add">🔴 必须新增</span>
+          </div>
+          <div class="task-meta">
+            <span>📁 纸笔推导 + CFD验证</span>
+            <span>⏱ 5~7天</span>
+            <span>🔗 前置：2.1</span>
+          </div>
+        </div>
+        <div class="task-expand" id="exp-2-2">›</div>
+      </div>
+      <div class="task-body" id="body-2-2">
+        <ul class="subtask-list">
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-2-2-A" onclick="toggleSub(event,'2-2-A')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-2-2-A">A · 分析钟罩式截面变化特征</div>
+              <div class="subtask-desc">钟罩式沿程截面积不均匀（内筒、间隙、底部各不同），不能直接套用U型弯公式，需引入截面积加权修正。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-2-2-B" onclick="toggleSub(event,'2-2-B')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-2-2-B">B · 推导面积加权等效液柱长度 L*_eff</div>
+              <div class="subtask-desc">将钟罩式沿流程分段，每段截面积 A_i，长度 l_i，推导等效液柱长度。这是相比U型弯公式的核心修正项。</div>
+              <div class="note note-code">L*_eff = A_ref × Σ(l_i / A_i)<br>f*_n = (1/2π)·√(2g·A_ref / Σ(A_ref²·l_i/A_i))</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-2-2-C" onclick="toggleSub(event,'2-2-C')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-2-2-C">C · 钟罩节流效应对阻尼的额外贡献</div>
+              <div class="subtask-desc">钟罩式内外筒间隙处存在显著节流效应（面积突变→涡耗散），需在阻尼模型中额外引入节流阻力项，这是钟罩式阻尼比高于U型弯的物理根源。</div>
+              <div class="note note-key">🔑 这一机理分析是两种存水弯对比研究的核心发现，必须用VOF流场的涡量图加以可视化验证。</div>
+            </div>
+          </li>
+        </ul>
+        <div class="task-footer">
+          <span><span class="tf-label">输出：</span><span class="tf-value">钟罩式修正公式 + U型 vs 钟罩式公式对比表</span></span>
+          <span><span class="tf-label">创新：</span><span class="tf-value">首次推导含截面修正的钟罩式固有频率解析式</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 阶段三 -->
+  <span class="section-anchor" id="sec-p3"></span>
+  <div class="section">
+    <div class="phase-header">
+      <div class="phase-badge ph-blue">⚡ 阶段三</div>
+      <div class="phase-line"></div>
+      <div class="phase-desc">CFD数值仿真深化分析（现有工作增强）</div>
+    </div>
+    <!-- 3.1 -->
+    <div class="task-card" id="task-3-1">
+      <div class="task-header" onclick="toggleTask('3-1')">
+        <div class="task-check" id="chk-3-1" onclick="toggleCheck(event,'3-1')"></div>
+        <div class="task-header-info">
+          <div class="task-title-row">
+            <span class="task-num">3.1</span>
+            <span class="task-name">固有动力学辨识（自由衰减）— 深化版</span>
+            <span class="tag tag-done">✓ 基础已有</span>
+            <span class="tag tag-warn">⚠ 需大幅增强</span>
+          </div>
+          <div class="task-meta">
+            <span>📁 U型弯 + 钟罩式</span>
+            <span>⏱ 5~8天</span>
+            <span>🔗 前置：1.1、2.1、2.2</span>
+          </div>
+        </div>
+        <div class="task-expand" id="exp-3-1">›</div>
+      </div>
+      <div class="task-body" id="body-3-1">
+        <ul class="subtask-list">
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-1-A" onclick="toggleSub(event,'3-1-A')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-1-A">A · 已完成：单一幅值自由衰减（±50mm）</div>
+              <div class="subtask-desc">已获得基础振荡频率，是良好起点。需在此基础上补充以下内容。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-1-B" onclick="toggleSub(event,'3-1-B')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-1-B">B · 【必须】多幅值自由衰减 — 非线性效应探测</div>
+              <div class="subtask-desc">增加初始扰动幅值：±10mm、±30mm、±80mm（共4个幅值）。绘制"初始幅值 vs 固有频率"图，若频率随幅值变化，说明系统存在非线性刚度特征。</div>
+              <div class="note note-warn">⚠ ±80mm扰动可能接近水封破坏临界，需谨慎设置并缩短时间步。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-1-C" onclick="toggleSub(event,'3-1-C')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-1-C">C · 【必须】从衰减曲线提取阻尼比 ζ</div>
+              <div class="subtask-desc">用包络线法（相邻峰值比）计算对数衰减率δ，进而得到阻尼比ζ。重点给出U型弯 vs 钟罩式的ζ对比，建议用连续5个峰值取均值。</div>
+              <div class="note note-code">δ = ln(A_n / A_{n+1})，ζ = δ / √(4π² + δ²)</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-1-D" onclick="toggleSub(event,'3-1-D')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-1-D">D · 【必须】流场可视化 — 阻尼机制解释</div>
+              <div class="subtask-desc">截取关键时刻（最大正位移/零位移/最大负位移）的流场快照，输出VOF相云图、速度矢量场、涡量云图。重点对比U型弯与钟罩式在节流处的涡耗散差异。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-1-E" onclick="toggleSub(event,'3-1-E')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-1-E">E · 【必须】制作两种存水弯固有动力学参数对比表</div>
+              <div class="subtask-desc">包含：固有频率f_n（理论/CFD/实验三值）、阻尼比ζ（理论/CFD/实验三值）、等效液柱长度L_eff。所有结论必须有定量数字支撑。</div>
+              <div class="note note-key">🔑 定量对比表是论文中说服审稿人的核心图表之一。</div>
+            </div>
+          </li>
+        </ul>
+        <div class="task-footer">
+          <span><span class="tf-label">输出：</span><span class="tf-value">阻尼比提取结果 + 非线性幅频图 + 流场可视化 + 参数对比表</span></span>
+          <span><span class="tf-label">支撑：</span><span class="tf-value">确定任务3.2强迫振荡的频率扫描中心点</span></span>
+        </div>
+      </div>
+    </div>
+    <!-- 3.2 -->
+    <div class="task-card" id="task-3-2">
+      <div class="task-header" onclick="toggleTask('3-2')">
+        <div class="task-check" id="chk-3-2" onclick="toggleCheck(event,'3-2')"></div>
+        <div class="task-header-info">
+          <div class="task-title-row">
+            <span class="task-num">3.2</span>
+            <span class="task-name">频率响应特性（强迫振荡）— 深化版</span>
+            <span class="tag tag-done">✓ 基础已有</span>
+            <span class="tag tag-warn">⚠ 需大幅增强</span>
+          </div>
+          <div class="task-meta">
+            <span>📁 U型弯 + 钟罩式</span>
+            <span>⏱ 8~12天（仿真量最大）</span>
+            <span>🔗 前置：3.1完成</span>
+          </div>
+        </div>
+        <div class="task-expand" id="exp-3-2">›</div>
+      </div>
+      <div class="task-body" id="body-3-2">
+        <ul class="subtask-list">
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-2-A" onclick="toggleSub(event,'3-2-A')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-2-A">A · 已完成：7个频率点单幅值强迫振荡</div>
+              <div class="subtask-desc">已有0.5, 1.0, 1.5, 1.6, 1.7, 2.0, 2.5 Hz的仿真结果，共14个工况。需在此基础上系统扩充。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-2-B" onclick="toggleSub(event,'3-2-B')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-2-B">B · 【必须】确定激励压力幅值依据，进行多幅值扫描</div>
+              <div class="subtask-desc">引用GB 50015规范确定低/中/高三个幅值（建议±10Pa、±30Pa、±80Pa），在三个幅值下各重复全频率扫描，判断系统线性性。</div>
+              <div class="note note-tip">💡 若高幅值下频响曲线出现不对称或峰值漂移，说明系统具有非线性特性（Duffing型），这是极有价值的发现。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-2-C" onclick="toggleSub(event,'3-2-C')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-2-C">C · 【必须】共振区精细扫描（步长0.05Hz）</div>
+              <div class="subtask-desc">在共振频段以0.05Hz步长精细扫描，精确定位共振峰，测量半功率带宽计算品质因数Q值，与阻尼比ζ进行一致性验证（Q = 1/(2ζ)）。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-2-D" onclick="toggleSub(event,'3-2-D')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-2-D">D · 【必须】构建完整FRF曲线与伯德图（Bode Plot）</div>
+              <div class="subtask-desc">提取三类响应量：① 水封振幅(mm)；② 气侧压力传递比(无量纲)；③ 响应与激励相位差(°)。振幅+相位上下排列即为伯德图。</div>
+              <div class="note note-key">🔑 伯德图在建筑排水领域是首创性分析工具引入，是本论文方法论层面的创新点，需在论文中明确指出。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-2-E" onclick="toggleSub(event,'3-2-E')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-2-E">E · 【重要】共振工况下的流场时序分析</div>
+              <div class="subtask-desc">在共振频率激励下，以1/8周期为间隔输出完整周期内8帧流场快照（VOF界面演变、速度场、涡量场），重点捕捉气泡夹带、界面撕裂等破坏前兆特征。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-2-F" onclick="toggleSub(event,'3-2-F')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-2-F">F · 【重要】真实排水压力谱输入验证</div>
+              <div class="subtask-desc">收集或引用文献中建筑立管实测压力波动数据（宽谱信号），代替纯正弦激励，进行至少1个工况的宽谱响应仿真，验证简谐激励结论的适用范围。</div>
+              <div class="note note-warn">⚠ 若无实测数据，可引用EN 12056或GB 50015中规定的设计压力波动范围构造宽谱信号。</div>
+            </div>
+          </li>
+        </ul>
+        <div class="task-footer">
+          <span><span class="tf-label">输出：</span><span class="tf-value">完整FRF曲线 + 伯德图 + 非线性幅频图 + 共振流场时序图</span></span>
+          <span><span class="tf-label">支撑：</span><span class="tf-value">确定任务3.3极限承压测试的最危险工况</span></span>
+        </div>
+      </div>
+    </div>
+    <!-- 3.3 -->
+    <div class="task-card" id="task-3-3">
+      <div class="task-header" onclick="toggleTask('3-3')">
+        <div class="task-check" id="chk-3-3" onclick="toggleCheck(event,'3-3')"></div>
+        <div class="task-header-info">
+          <div class="task-title-row">
+            <span class="task-num">3.3</span>
+            <span class="task-name">极限承压能力（压力阈值）— 深化版</span>
+            <span class="tag tag-done">✓ 基础已有</span>
+            <span class="tag tag-warn">⚠ 需大幅增强</span>
+          </div>
+          <div class="task-meta">
+            <span>📁 U型弯 + 钟罩式</span>
+            <span>⏱ 6~10天</span>
+            <span>🔗 前置：3.2完成</span>
+          </div>
+        </div>
+        <div class="task-expand" id="exp-3-3">›</div>
+      </div>
+      <div class="task-body" id="body-3-3">
+        <ul class="subtask-list">
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-3-A" onclick="toggleSub(event,'3-3-A')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-3-A">A · 已完成：线性递增压力下的水封破坏测试</div>
+              <div class="subtask-desc">已获得初步破坏压力阈值，是良好起点，需补充以下关键内容。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-3-B" onclick="toggleSub(event,'3-3-B')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-3-B">B · 【必须】明确水封失效判据（定量化）</div>
+              <div class="subtask-desc">必须采用至少一种定量判据：① VOF判据：气相体积分数α_gas超过0.5；② 几何判据：水封最小厚度降至初始深度10%；③ 压力穿透判据：气体压力传递比突然超过0.9。</div>
+              <div class="note note-key">🔑 明确的失效判据是实验与数值结果可对比的前提，也是论文可重复性的保证。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-3-C" onclick="toggleSub(event,'3-3-C')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-3-C">C · 【必须】三种加载制度对比研究</div>
+              <div class="subtask-desc">① 准静态加载（0.1 Pa/s缓慢递增）→ 静态极限；② 动态线性加载（10 Pa/s 和 50 Pa/s）→ 速率效应；③ 冲击加载（阶跃压力）→ 模拟卫生器具冲水瞬态。记录每种工况的破坏压力P_f和破坏时间t_f。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-3-D" onclick="toggleSub(event,'3-3-D')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-3-D">D · 【重要】共振频率下的极限测试</div>
+              <div class="subtask-desc">在共振频率下施加递增幅值正弦压力，记录临界振幅P_res，与非共振工况对比，量化共振对承压能力的削弱倍数。</div>
+              <div class="note note-warn">⚠ 预期：共振频率下的破坏压力阈值将远低于准静态值，这一发现将直接转化为设计建议。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-3-E" onclick="toggleSub(event,'3-3-E')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-3-E">E · 【重要】疲劳效应研究 — 循环加载后的承压衰减</div>
+              <div class="subtask-desc">先进行N次（N=10, 50, 100, 500次）强迫振荡循环，再进行极限承压测试。绘制"循环次数 vs 极限承压阈值"曲线，评估水封"疲劳破坏"特征。</div>
+              <div class="note note-key">🔑 这是存水弯研究领域几乎未被触及的方向，有望成为论文最具创新价值的贡献之一。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-3-F" onclick="toggleSub(event,'3-3-F')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-3-F">F · 【建议】构建动态安全包络曲面</div>
+              <div class="subtask-desc">将所有工况的（激励频率, 激励幅值, 破坏时间）整理为三维数据，拟合成"动态承压包络曲面"，提出工程安全系数建议值（以GB 50015规范最大设计压力为基准）。</div>
+            </div>
+          </li>
+        </ul>
+        <div class="task-footer">
+          <span><span class="tf-label">输出：</span><span class="tf-value">P-t曲线 + 三加载对比表 + 疲劳衰减曲线 + 安全包络图</span></span>
+          <span><span class="tf-label">价值：</span><span class="tf-value">直接转化为设计规范中存水弯选型安全系数建议</span></span>
+        </div>
+      </div>
+    </div>
+    <!-- 3.4 -->
+    <div class="task-card" id="task-3-4">
+      <div class="task-header" onclick="toggleTask('3-4')">
+        <div class="task-check" id="chk-3-4" onclick="toggleCheck(event,'3-4')"></div>
+        <div class="task-header-info">
+          <div class="task-title-row">
+            <span class="task-num">3.4</span>
+            <span class="task-name">几何参数化研究 — 响应面建立</span>
+            <span class="tag tag-add">🔴 必须新增</span>
+          </div>
+          <div class="task-meta">
+            <span>📁 以U型弯为主，钟罩式验证</span>
+            <span>⏱ 8~15天</span>
+            <span>🔗 前置：3.1、3.2完成</span>
+          </div>
+        </div>
+        <div class="task-expand" id="exp-3-4">›</div>
+      </div>
+      <div class="task-body" id="body-3-4">
+        <ul class="subtask-list">
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-4-A" onclick="toggleSub(event,'3-4-A')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-4-A">A · 识别关键几何参数与实验设计</div>
+              <div class="subtask-desc">关键参数：① 水封深度H（50/75/100mm），② 管径D（40/50/75mm），③ 钟罩间隙δ（仅钟罩式）。采用中心复合设计（CCD）方案，约15~20个CFD工况，减少计算量。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-4-B" onclick="toggleSub(event,'3-4-B')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-4-B">B · 建立响应面模型（RSM）</div>
+              <div class="subtask-desc">以 f_n、ζ、P_max 为响应量，建立关于几何参数的二次多项式响应面模型，验证拟合优度（R² &gt; 0.95）。工具：Python scikit-learn 或 MATLAB rsmdemo。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-3-4-C" onclick="toggleSub(event,'3-4-C')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-3-4-C">C · 给出优化设计建议</div>
+              <div class="subtask-desc">在给定设计约束下（管径限制、安装空间限制），给出最优存水弯几何参数组合，使承压能力最大，同时使 f_n 远离建筑振动激励频段。</div>
+            </div>
+          </li>
+        </ul>
+        <div class="task-footer">
+          <span><span class="tf-label">输出：</span><span class="tf-value">几何参数敏感性图 + 响应面模型 + 优化设计建议表</span></span>
+          <span><span class="tf-label">价值：</span><span class="tf-value">为存水弯产品设计提供量化优化工具</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 阶段四 -->
+  <span class="section-anchor" id="sec-p4"></span>
+  <div class="section">
+    <div class="phase-header">
+      <div class="phase-badge ph-red">🔴 阶段四</div>
+      <div class="phase-line"></div>
+      <div class="phase-desc">物理实验验证（SCI发表的必要条件）</div>
+    </div>
+    <div class="callout callout-red">
+      <div class="callout-icon">🚨</div>
+      <div><strong>为何实验验证是必须项而非可选项？</strong> 在 Building and Environment 等顶级期刊，纯数值研究必须提供实验验证，否则审稿人会以"数值方法未经验证"为由拒稿。实验无需覆盖所有工况，但至少需验证自由衰减和强迫振荡两类基本工况，以证明CFD模型的预测精度。</div>
+    </div>
+    <!-- 4.1 -->
+    <div class="task-card" id="task-4-1">
+      <div class="task-header" onclick="toggleTask('4-1')">
+        <div class="task-check" id="chk-4-1" onclick="toggleCheck(event,'4-1')"></div>
+        <div class="task-header-info">
+          <div class="task-title-row">
+            <span class="task-num">4.1</span>
+            <span class="task-name">实验台设计与搭建</span>
+            <span class="tag tag-add">🔴 必须新建</span>
+            <span class="tag tag-exp">🔬 实验</span>
+          </div>
+          <div class="task-meta">
+            <span>⏱ 10~20天（含采购）</span>
+            <span>🔗 前置：3.1完成（已知f_n才能设计激励装置）</span>
+          </div>
+        </div>
+        <div class="task-expand" id="exp-4-1">›</div>
+      </div>
+      <div class="task-body" id="body-4-1">
+        <ul class="subtask-list">
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-4-1-A" onclick="toggleSub(event,'4-1-A')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-4-1-A">A · 实验台核心组件设计</div>
+              <div class="subtask-desc">① 透明亚克力U型弯和钟罩式各一个；② 气压激励装置（精密气泵+比例阀+信号发生器，0~10Hz，0~200Pa）；③ 压力传感器×2（精度±0.1Pa）和液位传感器×2（量程0~200mm，精度±0.5mm）；④ 数据采集系统（采样率≥100Hz）。</div>
+              <div class="note note-tip">💡 若实验室条件有限，可仅搭建最简版：透明存水弯 + 手动注水实现初始扰动（自由衰减实验），已足以验证固有频率的CFD预测。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-4-1-B" onclick="toggleSub(event,'4-1-B')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-4-1-B">B · 实验工况设计原则</div>
+              <div class="subtask-desc">优先验证3类关键工况：① 自由衰减（验证f_n和ζ）；② 共振频率处的强迫振荡（验证最危险工况）；③ 准静态极限承压（验证P_max）。选择CFD结果中"最有特征性"的工况而非最多工况。</div>
+            </div>
+          </li>
+        </ul>
+        <div class="task-footer">
+          <span><span class="tf-label">输出：</span><span class="tf-value">实验台实物照片 + 测量系统示意图（论文Fig.1标配）</span></span>
+        </div>
+      </div>
+    </div>
+    <!-- 4.2 -->
+    <div class="task-card" id="task-4-2">
+      <div class="task-header" onclick="toggleTask('4-2')">
+        <div class="task-check" id="chk-4-2" onclick="toggleCheck(event,'4-2')"></div>
+        <div class="task-header-info">
+          <div class="task-title-row">
+            <span class="task-num">4.2</span>
+            <span class="task-name">实验数据采集与CFD比对验证</span>
+            <span class="tag tag-add">🔴 必须新增</span>
+            <span class="tag tag-exp">🔬 实验</span>
+          </div>
+          <div class="task-meta">
+            <span>⏱ 5~10天</span>
+            <span>🔗 前置：4.1完成</span>
+          </div>
+        </div>
+        <div class="task-expand" id="exp-4-2">›</div>
+      </div>
+      <div class="task-body" id="body-4-2">
+        <ul class="subtask-list">
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-4-2-A" onclick="toggleSub(event,'4-2-A')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-4-2-A">A · 自由衰减实验 — 固有频率与阻尼比验证</div>
+              <div class="subtask-desc">对两种存水弯各进行3次重复实验，用FFT分析液位时程提取实验固有频率f_exp，计算实验阻尼比ζ_exp，与CFD和理论值列表对比，报告平均误差和标准差。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-4-2-B" onclick="toggleSub(event,'4-2-B')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-4-2-B">B · 强迫振荡实验 — FRF曲线验证</div>
+              <div class="subtask-desc">在0.5~2.5Hz范围内测量实验FRF曲线，与CFD结果叠加绘制对比图，检验共振峰位置（误差＜5%）、振幅（误差＜20%）及相位特性。曲线对比图要同时画出误差棒（error bar）。</div>
+              <div class="note note-key">🔑 实验与CFD的对比图是论文中说服审稿人的最核心图件，需要精心制作。</div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-4-2-C" onclick="toggleSub(event,'4-2-C')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-4-2-C">C · 建立验证误差报告</div>
+              <div class="subtask-desc">用RMSE和MAPE定量描述CFD与实验的偏差，并分析误差来源（如表面张力被忽略、边界条件不完全一致等），这一段需写入论文正文。</div>
+            </div>
+          </li>
+        </ul>
+        <div class="task-footer">
+          <span><span class="tf-label">输出：</span><span class="tf-value">实验 vs CFD对比图 + 误差分析表</span></span>
+          <span><span class="tf-label">价值：</span><span class="tf-value">这是整篇论文可信度的最终背书</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 阶段五 -->
+  <span class="section-anchor" id="sec-p5"></span>
+  <div class="section">
+    <div class="phase-header">
+      <div class="phase-badge ph-orange">📝 阶段五</div>
+      <div class="phase-line"></div>
+      <div class="phase-desc">论文撰写与投稿</div>
+    </div>
+    <div class="task-card" id="task-5-1">
+      <div class="task-header" onclick="toggleTask('5-1')">
+        <div class="task-check" id="chk-5-1" onclick="toggleCheck(event,'5-1')"></div>
+        <div class="task-header-info">
+          <div class="task-title-row">
+            <span class="task-num">5.1</span>
+            <span class="task-name">论文结构组织与图表制作</span>
+            <span class="tag tag-add">📝 撰写</span>
+          </div>
+          <div class="task-meta">
+            <span>⏱ 15~25天</span>
+            <span>🔗 前置：阶段1~4全部完成</span>
+          </div>
+        </div>
+        <div class="task-expand" id="exp-5-1">›</div>
+      </div>
+      <div class="task-body" id="body-5-1">
+        <ul class="subtask-list">
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-5-1-A" onclick="toggleSub(event,'5-1-A')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-5-1-A">A · 推荐论文章节结构</div>
+              <div class="subtask-desc">
+                1. Introduction（背景、文献综述、研究缺口、本文贡献）<br>
+                2. Theoretical Framework（§2.1 U型弯解析模型，§2.2 钟罩式修正模型）<br>
+                3. Numerical Methodology（CFD设置、网格验证、湍流模型）<br>
+                4. Experimental Setup（实验台、测量系统、工况设计）<br>
+                5. Results &amp; Discussion（§5.1 自由衰减三角验证，§5.2 FRF与共振，§5.3 极限承压，§5.4 几何参数响应面）<br>
+                6. Design Implications（工程设计建议，安全系数推荐值）<br>
+                7. Conclusions
+              </div>
+            </div>
+          </li>
+          <li class="subtask-item">
+            <div class="sub-check" id="sub-5-1-B" onclick="toggleSub(event,'5-1-B')"></div>
+            <div class="subtask-content">
+              <div class="subtask-title" id="stitle-5-1-B">B · 核心图表清单（至少14张）</div>
+              <div class="subtask-desc">
+                Fig.1 实验台示意图及照片 · Fig.2 两种存水弯几何尺寸图<br>
+                Fig.3 网格方案与GCI收敛图 · Fig.4 U型弯解析推导示意图<br>
+                Fig.5 自由衰减时程曲线(CFD vs 实验) · Fig.6 对数衰减率提取图<br>
+                Fig.7 完整FRF伯德图(CFD vs 实验) · Fig.8 共振工况流场时序图<br>
+                Fig.9 非线性幅频特性图 · Fig.10 三种加载制度破坏过程对比<br>
+                Fig.11 P-t曲线与安全包络 · Fig.12 疲劳循环 vs 极限承压曲线<br>
+                Fig.13 几何参数响应面图 · Fig.14 工程设计安全工作区域图
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 总览表 -->
+  <span class="section-anchor" id="sec-table"></span>
+  <div class="section">
+    <div class="overview-card">
+      <div class="overview-title">📋 全局执行计划总览表（按时间顺序）</div>
+      <div class="tbl-wrap">
+        <table class="plan-table">
+          <thead>
+            <tr>
+              <th>编号</th><th>任务名称</th><th>状态</th><th>优先级</th><th>耗时</th><th>前置依赖</th><th>关键输出</th><th>论文章节</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><b>1.1</b></td><td>网格验证 + GCI + 湍流模型</td><td><span class="dot dot-o"></span>需增强</td><td class="prio-h">🔴 最高</td><td>3~5天</td><td>无</td><td>GCI表，收敛图</td><td>§3</td></tr>
+            <tr><td><b>2.1</b></td><td>U型弯固有频率解析推导</td><td><span class="dot dot-r"></span>新增</td><td class="prio-h">🔴 最高</td><td>5~7天</td><td>1.1</td><td>解析公式，阻尼模型</td><td>§2</td></tr>
+            <tr><td><b>2.2</b></td><td>钟罩式修正模型推导</td><td><span class="dot dot-r"></span>新增</td><td class="prio-h">🔴 最高</td><td>5~7天</td><td>2.1</td><td>L*_eff修正公式</td><td>§2</td></tr>
+            <tr><td><b>3.1</b></td><td>自由衰减深化（多幅值+阻尼）</td><td><span class="dot dot-o"></span>需增强</td><td class="prio-h">🔴 最高</td><td>5~8天</td><td>1.1, 2.1, 2.2</td><td>f_n, ζ, 流场图</td><td>§5.1</td></tr>
+            <tr><td><b>3.2</b></td><td>频率响应深化（FRF+伯德图）</td><td><span class="dot dot-o"></span>需增强</td><td class="prio-h">🔴 最高</td><td>8~12天</td><td>3.1</td><td>伯德图，非线性幅频</td><td>§5.2</td></tr>
+            <tr><td><b>3.3</b></td><td>极限承压深化（三加载+疲劳）</td><td><span class="dot dot-o"></span>需增强</td><td class="prio-h">🔴 最高</td><td>6~10天</td><td>3.2</td><td>P-t曲线，疲劳曲线</td><td>§5.3</td></tr>
+            <tr><td><b>4.1</b></td><td>实验台搭建</td><td><span class="dot dot-r"></span>新增</td><td class="prio-h">🔴 最高</td><td>10~20天</td><td>3.1</td><td>实验台照片，示意图</td><td>§4</td></tr>
+            <tr><td><b>4.2</b></td><td>实验数据采集与CFD比对</td><td><span class="dot dot-r"></span>新增</td><td class="prio-h">🔴 最高</td><td>5~10天</td><td>4.1, 3.1, 3.2</td><td>CFD vs 实验对比图</td><td>§5.1, §5.2</td></tr>
+            <tr><td><b>3.4</b></td><td>几何参数化 + 响应面分析</td><td><span class="dot dot-r"></span>新增</td><td class="prio-m">🟡 较高</td><td>8~15天</td><td>3.1, 3.2</td><td>响应面模型，优化建议</td><td>§5.4</td></tr>
+            <tr><td><b>5.1</b></td><td>论文撰写与图表制作</td><td><span class="dot dot-r"></span>新增</td><td class="prio-m">🟡 最后</td><td>15~25天</td><td>全部</td><td>完整论文初稿</td><td>全文</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:12px;padding:11px 14px;background:rgba(26,127,55,0.07);border-radius:8px;border:1px solid rgba(26,127,55,0.3);font-size:13px;color:#1a1f2e;">
+        📅 <strong>预估总时程：</strong>若理论推导与实验台搭建同步并行推进，全部工作约需 <strong style="color:#1a7f37;">3~5个月</strong> 完成，达到SCI投稿状态。
+      </div>
+    </div>
+  </div>
+
+  <!-- 第一周 -->
+  <span class="section-anchor" id="sec-week"></span>
+  <div class="section">
+    <div class="overview-card">
+      <div class="overview-title">🚀 明天就能开始 — 第一~四周执行清单</div>
+      <div class="week-grid">
+        <div class="week-card">
+          <div class="week-title wt-red">📌 第1~2天（立即开始）</div>
+          <ul>
+            <li>整理现有CFD结果数据（振幅、压力时程）</li>
+            <li>编写GCI计算脚本（Python/MATLAB，约30行）</li>
+            <li>开始推导U型弯液柱振荡方程（纸笔）</li>
+            <li>联系实验室采购透明亚克力存水弯样品</li>
+          </ul>
+        </div>
+        <div class="week-card">
+          <div class="week-title wt-blue">📌 第3~7天</div>
+          <ul>
+            <li>完成GCI计算并制作收敛表</li>
+            <li>补充k-ω SST湍流模型仿真（对比k-ε）</li>
+            <li>完成U型弯固有频率公式推导</li>
+            <li>设置多幅值（±10/30/80mm）自由衰减CFD工况</li>
+          </ul>
+        </div>
+        <div class="week-card">
+          <div class="week-title wt-purple">📌 第2周</div>
+          <ul>
+            <li>运行多幅值自由衰减仿真，提取阻尼比ζ</li>
+            <li>完成钟罩式L*_eff修正公式推导</li>
+            <li>开始实验台设计图纸与采购清单</li>
+            <li>在共振区附近加密频率点重新扫描</li>
+          </ul>
+        </div>
+        <div class="week-card">
+          <div class="week-title wt-green">📌 第3~4周</div>
+          <ul>
+            <li>完成FRF曲线绘制（伯德图）</li>
+            <li>开始三种加载制度下的极限承压仿真</li>
+            <li>实验台搭建完成并调试</li>
+            <li>开始实验数据采集（自由衰减验证）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer id="site-footer">
+  <div class="footer-info">
+    <span>完成率：<b id="ft-rate">0%</b></span>
+    <span>主任务：<b id="ft-done">0</b> / <b id="ft-total">10</b></span>
+    <span>子任务：<b id="ft-sub">0</b> / <b id="ft-sub-total">39</b></span>
+    <span style="color:#8c959f;">目标：Building and Environment · Physics of Fluids</span>
+  </div>
+  <button class="btn-reset" onclick="resetAll()">↺ 重置进度</button>
+</footer>
+
+<script>
+var STORE_KEY = 'trap_sci_plan_v3';
+var ALL_TASKS = ['1-1','2-1','2-2','3-1','3-2','3-3','3-4','4-1','4-2','5-1'];
+var ALL_SUBS = [
+  '1-1-A','1-1-B','1-1-C','1-1-D','1-1-E',
+  '2-1-A','2-1-B','2-1-C','2-1-D',
+  '2-2-A','2-2-B','2-2-C',
+  '3-1-A','3-1-B','3-1-C','3-1-D','3-1-E',
+  '3-2-A','3-2-B','3-2-C','3-2-D','3-2-E','3-2-F',
+  '3-3-A','3-3-B','3-3-C','3-3-D','3-3-E','3-3-F',
+  '3-4-A','3-4-B','3-4-C',
+  '4-1-A','4-1-B',
+  '4-2-A','4-2-B','4-2-C',
+  '5-1-A','5-1-B'
+];
+var DEFAULT_SUBS = ['1-1-A','3-1-A','3-2-A','3-3-A'];
+var state = { tasks: {}, subs: {}, expanded: {} };
+var toastTimer = null;
+
+function loadState() {
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      state.tasks    = parsed.tasks    || {};
+      state.subs     = parsed.subs     || {};
+      state.expanded = parsed.expanded || {};
+    } else {
+      var i;
+      for (i = 0; i < DEFAULT_SUBS.length; i++) {
+        state.subs[DEFAULT_SUBS[i]] = true;
+      }
+    }
+  } catch(e) {
+    state = { tasks: {}, subs: {}, expanded: {} };
+  }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(state));
+  } catch(e) {}
+  showToast();
+}
+
+function showToast() {
+  var t = document.getElementById('save-toast');
+  if (!t) return;
+  t.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { t.classList.remove('show'); }, 1800);
+}
+
+function toggleTask(id) {
+  var body = document.getElementById('body-' + id);
+  var exp  = document.getElementById('exp-' + id);
+  if (!body) return;
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  if (exp) exp.classList.toggle('open', !isOpen);
+  state.expanded[id] = !isOpen;
+  saveState();
+}
+
+function toggleCheck(e, id) {
+  e.stopPropagation();
+  var chk  = document.getElementById('chk-' + id);
+  var card = document.getElementById('task-' + id);
+  if (!chk) return;
+  var now = chk.classList.contains('checked');
+  chk.classList.toggle('checked', !now);
+  if (card) card.classList.toggle('completed', !now);
+  state.tasks[id] = !now;
+  updateStats();
+  saveState();
+}
+
+function toggleSub(e, id) {
+  e.stopPropagation();
+  var el    = document.getElementById('sub-' + id);
+  var title = document.getElementById('stitle-' + id);
+  if (!el) return;
+  var now = el.classList.contains('checked');
+  el.classList.toggle('checked', !now);
+  if (title) title.classList.toggle('sub-done', !now);
+  state.subs[id] = !now;
+  updateStats();
+  saveState();
+}
+
+function applyState() {
+  var i, id, done, checked, body, exp, el, title, chk, card;
+  for (i = 0; i < ALL_TASKS.length; i++) {
+    id   = ALL_TASKS[i];
+    chk  = document.getElementById('chk-' + id);
+    card = document.getElementById('task-' + id);
+    done = !!(state.tasks[id]);
+    if (chk)  chk.classList.toggle('checked', done);
+    if (card) card.classList.toggle('completed', done);
+    body = document.getElementById('body-' + id);
+    exp  = document.getElementById('exp-' + id);
+    var open = !!(state.expanded[id]);
+    if (body) body.classList.toggle('open', open);
+    if (exp)  exp.classList.toggle('open', open);
+  }
+  for (i = 0; i < ALL_SUBS.length; i++) {
+    id = ALL_SUBS[i];
+    el    = document.getElementById('sub-' + id);
+    title = document.getElementById('stitle-' + id);
+    if (typeof state.subs[id] !== 'undefined') {
+      checked = !!state.subs[id];
+    } else {
+      checked = (DEFAULT_SUBS.indexOf(id) >= 0);
+      state.subs[id] = checked;
+    }
+    if (el)    el.classList.toggle('checked', checked);
+    if (title) title.classList.toggle('sub-done', checked);
+  }
+}
+
+function updateStats() {
+  var i, id, taskDone = 0, subDone = 0;
+  var taskTotal = ALL_TASKS.length, subTotal = ALL_SUBS.length;
+  for (i = 0; i < ALL_TASKS.length; i++) {
+    if (state.tasks[ALL_TASKS[i]]) taskDone++;
+  }
+  for (i = 0; i < ALL_SUBS.length; i++) {
+    id = ALL_SUBS[i];
+    var v = (typeof state.subs[id] !== 'undefined') ? state.subs[id] : (DEFAULT_SUBS.indexOf(id) >= 0);
+    if (v) subDone++;
+  }
+  var pct = Math.round(taskDone / taskTotal * 100);
+  var set = function(elId, val) { var el = document.getElementById(elId); if(el) el.textContent = val; };
+  set('hd-total', taskTotal); set('hd-done', taskDone);
+  set('hd-sub-done', subDone); set('hd-sub-total', subTotal);
+  set('prog-text', pct + '%');
+  set('ft-rate', pct + '%'); set('ft-done', taskDone); set('ft-total', taskTotal);
+  set('ft-sub', subDone); set('ft-sub-total', subTotal);
+  var fill = document.getElementById('prog-fill');
+  if (fill) fill.style.width = pct + '%';
+}
+
+function setTab(el) {
+  var tabs = document.querySelectorAll('.nav-tab');
+  var i;
+  for (i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  el.classList.add('active');
+}
+
+function resetAll() {
+  if (!confirm('确认重置所有进度？此操作不可撤销。')) return;
+  state = { tasks: {}, subs: {}, expanded: {} };
+  var i;
+  for (i = 0; i < DEFAULT_SUBS.length; i++) state.subs[DEFAULT_SUBS[i]] = true;
+  applyState();
+  updateStats();
+  saveState();
+}
+
+document.addEventListener('click', function(e) {
+  var a = e.target;
+  while (a && a.tagName !== 'A') a = a.parentElement;
+  if (!a || !a.classList.contains('nav-tab')) return;
+  var href = a.getAttribute('href');
+  if (!href || href.charAt(0) !== '#') return;
+  e.preventDefault();
+  var target = document.getElementById(href.slice(1));
+  if (target) {
+    var offset = target.getBoundingClientRect().top + window.pageYOffset - 128;
+    window.scrollTo({ top: offset, behavior: 'smooth' });
+  }
+});
+
+loadState();
+applyState();
+updateStats();
+</script>
+</body>
+</html>
